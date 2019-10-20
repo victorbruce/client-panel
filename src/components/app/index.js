@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
+import Footer from "../footer";
 import Navbar from "../navbar";
 import LoginForm from "../loginForm";
 import SignupForm from "../signupForm";
+import HomePage from "../homePage";
 
 class App extends Component {
   state = {};
@@ -10,13 +12,14 @@ class App extends Component {
     return (
       <main>
         <Navbar />
-        <div className="container">
-          <h1>React Forms</h1>
+        <div>
           <Switch>
             <Route path="/signup" component={SignupForm} />
-            <Route path="/" component={LoginForm} />
+            <Route path="/login" component={LoginForm} />
+            <Route path="/" component={HomePage} />
           </Switch>
         </div>
+        <Footer />
       </main>
     );
   }
