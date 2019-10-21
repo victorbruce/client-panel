@@ -5,7 +5,7 @@ import Form from "../common/form";
 class SignupForm extends Form {
   state = {
     data: {
-      fullName: "",
+      name: "",
       email: "",
       password: ""
     },
