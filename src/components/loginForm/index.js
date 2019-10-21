@@ -19,16 +19,6 @@ class LoginForm extends Form {
     password: Joi.string().required()
   };
 
-  handleSubmit = e => {
-    e.preventDefault();
-
-    const errors = this.validate();
-    this.setState({ errors: errors || {} });
-    if (errors) return;
-
-    this.doSubmit();
-  };
-
   doSubmit() {
     console.log("submitted");
   }
