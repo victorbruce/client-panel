@@ -6,7 +6,7 @@ const App = () => {
   return (
     <React.Fragment>
       <Switch>
-        <Route path="/" exact component={AppLinks} />
+        <Route path="/" component={AppLinks} />
       </Switch>
     </React.Fragment>
   );
