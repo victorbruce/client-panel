@@ -1,26 +1,30 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { compose } from "redux";
+import { connect } from "react-redux";
+import { firestoreConnect } from "react-redux-firebase";
 
-class Clients extends React.Component {
+class Clients extends React.Component<any, any> {
+  state = {
+    totalOwed: null,
+  };
+
+  static getDerivedStateFromProps(props, state)  {
+    const {clients} = props;
+
+    if (clients) {
+      const total = clients.reduce((total, client) => {
+        return total + parseFloat(client.balance.toString());
+      }, 0)
+
+      return { totalOwed: total}
+    }
+
+    return null;
+  }
+
   render() {
-    const clients = [
-      {
-        id: "kdfsd",
-        firstName: "Kevin",
-        lastName: "Johnson",
-        email: "kevin@gmail.com",
-        phone: "222-222-2222",
-        balance: "30",
-      },
-      {
-        id: "kddssd",
-        firstName: "Bob",
-        lastName: "Jackson",
-        email: "bob@gmail.com",
-        phone: "333-333-3333",
-        balance: "1000",
-      },
-    ];
+    const { clients } = this.props;
 
     if (clients) {
       return (
@@ -29,7 +33,12 @@ class Clients extends React.Component {
             <div className="col-md-6">
               <h2>Clients</h2>
             </div>
-            <div className="col-md-6"></div>
+            <div className="col-md-6">
+              <h5 className="text-right text-secondary">
+                Total Owed{" "}
+                <span className="text-primary">${this.state.totalOwed}</span>
+              </h5>
+            </div>
           </div>
           <table className="table table-striped">
             <thead className="thead-inverse">
@@ -68,4 +77,9 @@ class Clients extends React.Component {
   }
 }
 
-export default Clients;
+export default compose<any>(
+  firestoreConnect([{ collection: "clients" }]),
+  connect((state) => ({
+    clients: state.firestore.ordered.clients,
+  }))
+)(Clients);
