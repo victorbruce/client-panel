@@ -25,9 +25,6 @@ const rrfConfig = {
 // Initialize firebase instance
 firebase.initializeApp(firebaseConfig);
 
-// Initialize firestore instance
-// const firestore = firebase.firestore();
-
 const composeEnhancers =
   (typeof window === "object" &&
   (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__

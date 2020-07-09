@@ -7,8 +7,70 @@ import { firestoreConnect } from "react-redux-firebase";
 import AppLayout from "../../../layouts/AppLayout";
 
 class ClientDetails extends Component<any, any> {
+  state = {
+    showBalanceUpdate: false,
+    balanceUpdateAmount: "",
+  };
+
+  toggleBalance = () => {
+    this.setState({ showBalanceUpdate: !this.state.showBalanceUpdate });
+  };
+
+  onDelete = () => {
+    const { id, firestore, history } = this.props;
+
+    firestore
+      .delete({ collection: "clients", doc: id[0].id })
+      .then(() => history.push("/"));
+  };
+
+  handleInputChange = (e) => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
+
+  balanceSubmit = (e) => {
+    e.preventDefault();
+
+    const { firestore, id } = this.props;
+    const { balanceUpdateAmount } = this.state;
+
+    const clientUpdate = {
+      balance: parseFloat(balanceUpdateAmount),
+    };
+    // update firestore
+    firestore.update({ collection: "clients", doc: id[0].id }, clientUpdate);
+  };
+
   render() {
     const { client, id } = this.props;
+    const { showBalanceUpdate, balanceUpdateAmount } = this.state;
+
+    let balanceForm = <div />;
+
+    // if balance form should display
+    if (showBalanceUpdate) {
+      balanceForm = (
+        <form onSubmit={this.balanceSubmit}>
+          <div className="input-group">
+            <input
+              type="text"
+              className="form-control"
+              name="balanceUpdateAmount"
+              placeholder="Add New Balance"
+              value={balanceUpdateAmount}
+              onChange={this.handleInputChange}
+            />
+            <div className="input-group-append">
+              <input
+                type="submit"
+                value="Update"
+                className="btn btn-outline-dark"
+              />
+            </div>
+          </div>
+        </form>
+      );
+    }
 
     if (id && client && id[0]) {
       return (
@@ -29,7 +91,9 @@ class ClientDetails extends Component<any, any> {
                     >
                       Edit
                     </Link>
-                    <button className="btn btn-danger">Delete</button>
+                    <button onClick={this.onDelete} className="btn btn-danger">
+                      Delete
+                    </button>
                   </div>
                 </div>
               </div>
@@ -58,8 +122,14 @@ class ClientDetails extends Component<any, any> {
                         >
                           ${parseFloat(client.balance).toFixed(2)}
                         </span>
+                        <small>
+                          {" "}
+                          <a href="#!" onClick={this.toggleBalance}>
+                            edit
+                          </a>
+                        </small>
                       </h3>
-                      {/* @todo - balance form */}
+                      {balanceForm}
                     </div>
                   </div>
                   <hr />
