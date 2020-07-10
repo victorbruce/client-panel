@@ -6,7 +6,12 @@ import { firestoreConnect } from "react-redux-firebase";
 
 import AppLayout from "../../../layouts/AppLayout";
 
-class ClientDetails extends Component<any, any> {
+type ClientDetailsState = {
+  showBalanceUpdate: boolean;
+  balanceUpdateAmount: string | number;
+};
+
+class ClientDetails extends Component<any, ClientDetailsState> {
   state = {
     showBalanceUpdate: false,
     balanceUpdateAmount: "",
@@ -24,8 +29,15 @@ class ClientDetails extends Component<any, any> {
       .then(() => history.push("/"));
   };
 
-  handleInputChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
+  handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value }: any = e.target;
+
+    const updatedState = { [name]: value } as Pick<
+      ClientDetailsState,
+      keyof ClientDetailsState
+    >;
+
+    this.setState(updatedState);
   };
 
   balanceSubmit = (e) => {

@@ -6,7 +6,15 @@ import { firestoreConnect } from "react-redux-firebase";
 
 import AppLayout from "../../../layouts/AppLayout";
 
-class AddClient extends Component<any, any> {
+type AddClientState = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  balance: string | number;
+};
+
+class AddClient extends Component<any, AddClientState> {
   state = {
     firstName: "",
     lastName: "",
@@ -15,8 +23,14 @@ class AddClient extends Component<any, any> {
     balance: "",
   };
 
-  handleInputChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
+  handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    const updatedState = { [name]: value } as Pick<
+      AddClientState,
+      keyof AddClientState
+    >;
+    this.setState(updatedState);
   };
 
   onFormSubmit = (e) => {

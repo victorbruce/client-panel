@@ -4,20 +4,24 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 
-class Clients extends React.Component<any, any> {
+type ClientsState = {
+  totalOwed: number | null;
+};
+
+class Clients extends React.Component<any, ClientsState> {
   state = {
     totalOwed: null,
   };
 
-  static getDerivedStateFromProps(props, state)  {
-    const {clients} = props;
+  static getDerivedStateFromProps(props, state) {
+    const { clients } = props;
 
     if (clients) {
       const total = clients.reduce((total, client) => {
         return total + parseFloat(client.balance.toString());
-      }, 0)
+      }, 0);
 
-      return { totalOwed: total}
+      return { totalOwed: total };
     }
 
     return null;
