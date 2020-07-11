@@ -1,5 +1,10 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { compose } from "redux";
 import { firebaseConnect } from "react-redux-firebase";
+import * as actions from "../../../store/actions";
+
+import Alert from "../../../components/Alert";
 
 type LoginState = {
   email: string;
@@ -18,14 +23,14 @@ class Login extends Component<any, LoginState> {
       LoginState,
       keyof LoginState
     >;
-    
+
     this.setState(updatedState);
   };
 
   handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const { firebase } = this.props;
+    const { firebase, notifyUser } = this.props;
     const { email, password } = this.state;
 
     firebase
@@ -33,10 +38,12 @@ class Login extends Component<any, LoginState> {
         email,
         password,
       })
-      .catch((err) => alert("Invalid login credentials"));
+      .catch((err) => notifyUser("Invalid login credentials", "error"));
   };
 
   render() {
+    const { message, messageType } = this.props.notify;
+
     return (
       <div className="Login">
         <div className="container">
@@ -44,6 +51,9 @@ class Login extends Component<any, LoginState> {
             <div className="col-md-6 mx-auto">
               <div className="card mt-5">
                 <div className="card-body">
+                  {message ? (
+                    <Alert message={message} messageType={messageType} />
+                  ) : null}
                   <h1 className="text-center pb-4 pb-3 text-primary">Login</h1>
                   <form onSubmit={this.handleSubmit}>
                     <div className="form-group">
@@ -82,4 +92,20 @@ class Login extends Component<any, LoginState> {
   }
 }
 
-export default firebaseConnect()(Login);
+const mapStateToProps = (state) => {
+  return {
+    notify: state.notify,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    notifyUser: (message, messageType) =>
+      dispatch(actions.notifyUser(message, messageType)),
+  };
+};
+
+export default compose<any>(
+  firebaseConnect(),
+  connect(mapStateToProps, mapDispatchToProps)
+)(Login);
