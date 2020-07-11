@@ -5,6 +5,7 @@ const Dashboard = lazy(() => import("../Dashboard"));
 const AddClient = lazy(() => import("../AddClient"));
 const ClientDetails = lazy(() => import("../ClientDetails"));
 const EditClient = lazy(() => import("../EditClient"));
+const Login = lazy(() => import("../../Auth/Login"));
 
 const AppLinks = () => {
   return (
@@ -15,6 +16,7 @@ const AppLinks = () => {
           <Route path="/client/add" exact component={AddClient} />
           <Route path="/client/edit/:id" exact component={EditClient} />
           <Route path="/client/:id" exact component={ClientDetails} />
+          <Route path="/login" exact component={Login} />
         </Switch>
       </Suspense>
     </div>
