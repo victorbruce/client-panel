@@ -18,6 +18,7 @@ class ClientDetails extends Component<any, ClientDetailsState> {
   };
 
   toggleBalance = () => {
+    console.log("toggling");
     this.setState({ showBalanceUpdate: !this.state.showBalanceUpdate });
   };
 
@@ -136,9 +137,13 @@ class ClientDetails extends Component<any, ClientDetailsState> {
                         </span>
                         <small>
                           {" "}
-                          <a href="#!" onClick={this.toggleBalance}>
+                          <span
+                            className="text-primary"
+                            onClick={this.toggleBalance}
+                            style={{cursor: "pointer"}}
+                          >
                             edit
-                          </a>
+                          </span>
                         </small>
                       </h3>
                       {balanceForm}
