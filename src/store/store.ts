@@ -1,5 +1,5 @@
 import { createStore, compose } from "redux";
-import firebase from '../shared/fbConfig';
+import firebase from "../shared/fbConfig";
 import { createFirestoreInstance } from "redux-firestore";
 import rootReducer from "./reducers";
 
@@ -15,8 +15,20 @@ const composeEnhancers =
     ? (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
     : null) || compose;
 
+// Check localStorage for settings
+if (localStorage.getItem("settings") === 'undefined') {
+  // create defaultSettings
+  const defaultSettings = {
+    disableBalanceOnAdd: true,
+    disableBalanceOnEdit: false,
+    allowRegistration: false,
+  };
 
-const initialState = {};
+  // set to localStorage
+  localStorage.setItem('settings', JSON.stringify(defaultSettings))
+}
+
+const initialState = {settings: JSON.parse((localStorage as any).getItem('settings'))};
 
 const store = createStore(rootReducer, initialState, composeEnhancers());
 

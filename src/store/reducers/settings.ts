@@ -1,33 +1,27 @@
 import * as actionTypes from "../actionTypes/settings";
 
-const initialState = {
-  disableBalanceOnAdd: true,
-  disableBalanceOnEdit: false,
-  allowRegistration: false,
-};
-
 const disableBalanceOnAdd = (state, action) => {
   return {
     ...state,
-    disableBalanceOnAdd: !state.disableBalanceOnAdd,
+    disableBalanceOnAdd: action.payload,
   };
 };
 
 const disableBalanceOnEdit = (state, action) => {
   return {
     ...state,
-    disableBalanceOnEdit: !state.disableBalanceOnEdit,
+    disableBalanceOnEdit: action.payload,
   };
 };
 
 const allowRegistration = (state, action) => {
   return {
     ...state,
-    allowRegistration: !state.allowRegistration,
+    allowRegistration: action.payload,
   };
 };
 
-const reducer = (state = initialState, action) => {
+const reducer = (state = {}, action) => {
   switch (action.type) {
     case actionTypes.DISABLE_BALANCE_ON_ADD:
       return disableBalanceOnAdd(state, action);
