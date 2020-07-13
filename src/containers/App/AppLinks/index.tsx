@@ -10,6 +10,7 @@ const AddClient = lazy(() => import("../AddClient"));
 const ClientDetails = lazy(() => import("../ClientDetails"));
 const EditClient = lazy(() => import("../EditClient"));
 const Login = lazy(() => import("../../Auth/Login"));
+const Settings = lazy(() => import("../Settings"));
 
 const AppLinks = () => {
   return (
@@ -36,6 +37,11 @@ const AppLinks = () => {
             path="/login"
             exact
             component={UserIsNotAuthenticated(Login)}
+          />
+          <Route
+            path="/settings"
+            exact
+            component={UserIsAuthenticated(Settings)}
           />
         </Switch>
       </Suspense>
