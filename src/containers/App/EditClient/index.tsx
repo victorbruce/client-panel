@@ -55,6 +55,7 @@ class EditClient extends Component<any, any> {
 
   render() {
     const { client } = this.props;
+    const { disableBalanceOnEdit } = this.props.settings;
 
     if (client) {
       return (
@@ -126,6 +127,7 @@ class EditClient extends Component<any, any> {
                         name="balance"
                         ref={this.balanceInput}
                         defaultValue={client.balance}
+                        disabled={disableBalanceOnEdit}
                       />
                     </div>
                     <button type="submit" className="btn btn-primary btn-block">
@@ -148,6 +150,7 @@ const mapStateToProps = (state) => {
   return {
     client: state.firestore.data.client,
     id: state.firestore.ordered.client,
+    settings: state.settings,
   };
 };
 

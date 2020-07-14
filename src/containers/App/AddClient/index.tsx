@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-// import { compose } from "redux";
-// import { connect } from "react-redux";
+import { compose } from "redux";
+import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 
 import AppLayout from "../../../layouts/AppLayout";
@@ -52,6 +52,7 @@ class AddClient extends Component<any, AddClientState> {
   };
 
   render() {
+    const { disableBalanceOnAdd } = this.props.settings;
     return (
       <AppLayout>
         <div className="AddClient">
@@ -122,6 +123,7 @@ class AddClient extends Component<any, AddClientState> {
                       name="balance"
                       onChange={this.handleInputChange}
                       value={this.state.balance}
+                      disabled={disableBalanceOnAdd}
                     />
                   </div>
                   <button type="submit" className="btn btn-primary btn-block">
@@ -137,4 +139,13 @@ class AddClient extends Component<any, AddClientState> {
   }
 }
 
-export default firestoreConnect()(AddClient);
+const mapStateToProps = (state) => {
+  return {
+    settings: state.settings,
+  };
+};
+
+export default compose<any>(
+  firestoreConnect(),
+  connect(mapStateToProps)
+)(AddClient);
