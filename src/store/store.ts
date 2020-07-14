@@ -16,7 +16,10 @@ const composeEnhancers =
     : null) || compose;
 
 // Check localStorage for settings
-if (localStorage.getItem("settings") === 'undefined') {
+if (
+  localStorage.getItem("settings") === null ||
+  localStorage.getItem("settings") === "undefined"
+) {
   // create defaultSettings
   const defaultSettings = {
     disableBalanceOnAdd: true,
@@ -25,10 +28,12 @@ if (localStorage.getItem("settings") === 'undefined') {
   };
 
   // set to localStorage
-  localStorage.setItem('settings', JSON.stringify(defaultSettings))
+  localStorage.setItem("settings", JSON.stringify(defaultSettings));
 }
 
-const initialState = {settings: JSON.parse((localStorage as any).getItem('settings'))};
+const initialState = {
+  settings: JSON.parse((localStorage as any).getItem("settings")),
+};
 
 const store = createStore(rootReducer, initialState, composeEnhancers());
 
