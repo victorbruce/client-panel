@@ -11,6 +11,7 @@ const ClientDetails = lazy(() => import("../ClientDetails"));
 const EditClient = lazy(() => import("../EditClient"));
 const Login = lazy(() => import("../../Auth/Login"));
 const Settings = lazy(() => import("../Settings"));
+const Register = lazy(() => import("../Register"));
 
 const AppLinks = () => {
   return (
@@ -37,6 +38,11 @@ const AppLinks = () => {
             path="/login"
             exact
             component={UserIsNotAuthenticated(Login)}
+          />
+          <Route
+            path="/register"
+            exact
+            component={UserIsNotAuthenticated(Register)}
           />
           <Route
             path="/settings"

@@ -7,12 +7,12 @@ import * as actions from "../../../store/actions";
 
 import Alert from "../../../components/Alert";
 
-type LoginState = {
+type RegisterState = {
   email: string;
   password: string;
 };
 
-class Login extends Component<any, LoginState> {
+class Register extends Component<any, RegisterState> {
   state = {
     email: "",
     password: "",
@@ -21,8 +21,8 @@ class Login extends Component<any, LoginState> {
   handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value }: any = e.target;
     const updatedState = { [name]: value } as Pick<
-      LoginState,
-      keyof LoginState
+      RegisterState,
+      keyof RegisterState
     >;
 
     this.setState(updatedState);
@@ -34,12 +34,8 @@ class Login extends Component<any, LoginState> {
     const { firebase, notifyUser } = this.props;
     const { email, password } = this.state;
 
-    firebase
-      .login({
-        email,
-        password,
-      })
-      .catch((err) => notifyUser("Invalid login credentials", "error"));
+    // Register
+    firebase.createUser({email, password}).catch((err) => notifyUser('User already exists.', 'error') )
   };
 
   render() {
@@ -56,7 +52,9 @@ class Login extends Component<any, LoginState> {
                   {message ? (
                     <Alert message={message} messageType={messageType} />
                   ) : null}
-                  <h1 className="text-center pb-4 pb-3 text-primary">Login</h1>
+                  <h1 className="text-center pb-4 pb-3 text-primary">
+                    Register
+                  </h1>
                   <form onSubmit={this.handleSubmit}>
                     <div className="form-group">
                       <label htmlFor="email">Email</label>
@@ -81,12 +79,14 @@ class Login extends Component<any, LoginState> {
                       />
                     </div>
                     <button type="submit" className="btn btn-primary btn-block">
-                      Login
+                      Register
                     </button>
                   </form>
                   {allowRegistration ? (
                     <div className="text-right mt-3">
-                    <Link to="/register" className="btn btn-link">Create an Account</Link>
+                      <Link to="/login" className="btn btn-link">
+                        Already have an account?
+                      </Link>
                     </div>
                   ) : null}
                 </div>
@@ -102,7 +102,7 @@ class Login extends Component<any, LoginState> {
 const mapStateToProps = (state) => {
   return {
     notify: state.notify,
-    settings: state.settings
+    settings: state.settings,
   };
 };
 
@@ -116,4 +116,4 @@ const mapDispatchToProps = (dispatch) => {
 export default compose<any>(
   firebaseConnect(),
   connect(mapStateToProps, mapDispatchToProps)
-)(Login);
+)(Register);

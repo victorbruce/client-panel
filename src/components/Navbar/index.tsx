@@ -29,6 +29,7 @@ class Navbar extends Component<any, any> {
 
   render() {
     const { auth } = this.props;
+
     return (
       <nav className="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
         <div className="container">
